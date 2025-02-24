@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Medicine Counter</title>
+    <link rel="stylesheet" href="style.css">
+    <script src="/script.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Outfit&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="page">
+        
+        <main class="main">
+          <div class="searchMain">
+          <div class="mainLogo">
+            <div class="logoDiv">
+            <img class="medicare" src="/icons/medicare.svg">
+          </div>
+        </div>
+            <div class="mainSearch">
+          <div class="searchDiv">
+                  <form id="searchForm">
+                      <input type="search"
+                        class="searchBox"
+                        id="medicineName"
+                        placeholder="Search Medicines or pharmacy products"
+                        onsubmit="searchMedicine()"
+                        />
+  
+                      
+                  </form>
+                        <div class="searchButton" role="button" onclick="searchMedicine()"><img class="searchIcon" src="/icons/search_icon.svg"></div>
+              </div>
+            </div>
+          </div>
+          </div>
+          </div>
+        </main>
+        <div id="resultDiv"></div>
+      </div>
+</body>
+</html>
