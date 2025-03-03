@@ -1,3 +1,18 @@
+
+
+html {
+    scroll-behavior: smooth; /* This will enable smooth scrolling for the whole page */
+}
+
+
+
+/* Body and overall page styles */
+body {
+    font-family: "Outfit", serif;
+    font-optical-sizing: auto;
+    font-style: normal;
+}
+
 .page {
     --background: #ffffff;
     --foreground: #171717;
@@ -6,48 +21,12 @@
     display: flex;
     flex-direction: column;
     align-items: center;
-    gap: 64px;
-    background-color: var(--background);
-    width: 100%;
-    height: 100%;
-}
-
-.main {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
     justify-content: center;
-    gap: 64px;
-    width: 100%;
-    height: 100%;
+    height: 100vh;
+    background-color: var(--background);
 }
 
-.headerLogo {
-    width: 100px;
-    height: 70px;
-    cursor: pointer;
-    margin: 0 auto; /* Center the logo horizontally */
-}
-
-.mainLogo {
-    width: 300px;
-    height: 70px;
-}
-.logoDiv {
-    width: 100%;
-    height: 100%;
-}
-
-.medicare {
-    width: 100%;
-    height: 100%;
-    
-}
-
-.headerSearch {
-    height: 60px;
-}
-
+/* Search section styling */
 .searchDiv {
     display: flex;
     justify-content: center;
@@ -56,21 +35,21 @@
     border-radius: 5vw;
     background: var(--foreground);
     height: 60px;   /* Set a fixed height for the search box */
+    padding: 10px;
 }
 
 .searchBox {
     height: 40px;
     padding: 10px;
-    width: 100%;
     font-size: 16px;
     border: none;
     outline: none;
     margin: 10px;
     background: none;
     color: var(--background);
+    width: 300px;
 }
 
-/* Search button */
 .searchButton {
     width: auto;
     height: auto;
@@ -79,22 +58,19 @@
     margin: 10px;
     background-color: var(--accent);
     padding: 10px;
-    border-radius: 30px;
+    border-radius: 50%;
 }
-.searchButton:hover{
+
+.searchButton:hover {
     background-color: var(--accent-hover);
 }
 
 .searchIcon {
-    width: 100%;
-    height: 100%;
+    width: 25px;
+    height: 25px;
 }
 
-body {
-    font-family: "Outfit", serif;
-    font-optical-sizing: auto;
-    font-style: normal;
-}
+/* Medicine details result section */
 .medicine-details {
     max-width: 800px;
     margin: auto;
@@ -107,14 +83,6 @@ body {
 .medicine-details h1 {
     text-align: center;
     color: #333;
-}
-
-.medicine-details .section {
-    margin-top: 20px;
-}
-
-.medicine-details .section h2 {
-    color: #2c3e50;
 }
 
 .medicine-details p {
@@ -137,7 +105,25 @@ strong {
     color: #333;
 }
 
-.searchIcon{
-    width: 15px;
-    height: 15px;
+/* Styling for the result div with fade-in animation */
+.resultDiv {
+    margin-top: 20px;
+    max-width: 800px;
+    width: 100%;
+    opacity: 0;
+    transform: translateY(-20px);
+    animation: fadeIn 1s forwards; /* Ensure fadeIn animation is applied */
+    transition: opacity 1s, transform 1s; /* Ensure smooth transition */
+}
+
+/* Fade in animation keyframes */
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(-20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
 }
