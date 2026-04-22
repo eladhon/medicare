@@ -1,45 +1,182 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Medicine Counter</title>
-    <link rel="stylesheet" href="./style.css">
-    <script src="./script.js"></script>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Outfit&display=swap" rel="stylesheet">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description"
+    content="Medicare — Search and explore detailed drug and medicine information from the FDA database. Clinical data at your fingertips.">
+  <title>Medicare — Drug & Medicine Search</title>
+  <link rel="stylesheet" href="./style.css">
+  <link rel="stylesheet"
+    href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap">
 </head>
+
 <body>
-    <div class="page">
-        
-        <main class="main">
-          <div class="searchMain">
-          <div class="mainLogo">
-            <div class="logoDiv">
-            <img class="medicare" src="./icons/medicare.svg">
-          </div>
-        </div>
-            <div class="mainSearch">
-          <div class="searchDiv">
-                  <form id="searchForm">
-                      <input type="search"
-                        class="searchBox"
-                        id="medicineName"
-                        placeholder="Search Medicines or pharmacy products"
-                        onsubmit="searchMedicine()"
-                        />
-  
-                      
-                  </form>
-                        <div class="searchButton" role="button" onclick="searchMedicine()"><img class="searchIcon" src="./icons/search_icon.svg"></div>
-              </div>
-            </div>
-          </div>
-          </div>
-          </div>
-        </main>
-        <div id="resultDiv"></div>
+  <div class="app" id="app">
+
+    <!-- ===== STICKY HEADER (shown after search) ===== -->
+    <header class="app-header" id="appHeader">
+      <a class="header-brand" id="headerBrand" title="Back to search">
+        <img src="./icons/medicare.svg" alt="Medicare Logo">
+      </a>
+      <div class="header-search">
+        <span class="material-symbols-outlined search-icon">search</span>
+        <input type="text" id="headerSearchInput" placeholder="Search drugs, medicines, dosage..." autocomplete="off">
+        <button class="clear-btn" id="headerClearBtn" aria-label="Clear search">
+          <span class="material-symbols-outlined">close</span>
+        </button>
+        <div class="autocomplete-dropdown" id="headerAutocomplete"></div>
       </div>
+    </header>
+
+    <!-- ===== SEARCH HOME (centered landing) ===== -->
+    <main class="search-home" id="searchHome">
+      <div class="hero-brand">
+        <img src="./icons/medicare.svg" alt="Medicare">
+
+        <p class="hero-subtitle">Clinical Drug Data Retrieval System</p>
+      </div>
+
+      <div class="hero-search-container">
+        <div class="hero-search" id="heroSearchWrapper">
+          <span class="material-symbols-outlined search-icon">search</span>
+          <input type="text" id="heroSearchInput" placeholder="Search for drugs, medicines, or dosage..."
+            autocomplete="off" autofocus>
+          <div class="autocomplete-dropdown" id="heroAutocomplete"></div>
+        </div>
+
+        <div class="hero-actions">
+          <button class="btn-search" id="btnSearch">Search FDA Database</button>
+          <button class="btn-lucky" id="btnSurprise">Surprise Me</button>
+        </div>
+      </div>
+
+      <div class="trust-indicators">
+        <span><span class="material-symbols-outlined">verified</span> FDA Verified Data</span>
+        <span class="dot">•</span>
+        <span><span class="material-symbols-outlined">update</span> Updated in Real-time</span>
+        <span class="dot">•</span>
+        <span><span class="material-symbols-outlined">shield</span> Open Source API</span>
+      </div>
+    </main>
+
+    <!-- ===== LOADING STATE ===== -->
+    <div class="loading-overlay" id="loadingState">
+      <div class="skeleton skeleton-title"></div>
+      <div class="skeleton skeleton-line"></div>
+      <div class="skeleton skeleton-line short"></div>
+      <div class="skeleton skeleton-line"></div>
+      <div class="skeleton skeleton-line shorter"></div>
+      <div class="skeleton skeleton-line"></div>
+      <div class="skeleton skeleton-line short"></div>
+    </div>
+
+    <!-- ===== NO RESULTS STATE ===== -->
+    <div class="no-results" id="noResults">
+      <span class="material-symbols-outlined">search_off</span>
+      <h2>No results found</h2>
+      <p id="noResultsMsg">We couldn't find any FDA data for that search. Try a different drug or brand name.</p>
+      <button class="btn-back" id="btnBackHome">Try Another Search</button>
+    </div>
+
+    <!-- ===== DETAILS / ARTICLE VIEW ===== -->
+    <div class="details-view" id="detailsView">
+
+      <!-- Left Sidebar TOC -->
+      <aside class="toc-sidebar" id="tocSidebar">
+        <div class="toc-header">
+          <h2>Contents</h2>
+          <span class="caption">Table of Contents</span>
+        </div>
+        <nav class="toc-nav" id="tocNav">
+          <!-- Populated dynamically -->
+        </nav>
+      </aside>
+
+      <!-- Main Article Area -->
+      <div class="article-main">
+        <h1 class="article-title" id="articleTitle"></h1>
+        <div class="article-layout">
+          <div class="article-content" id="articleContent">
+            <!-- Populated dynamically -->
+          </div>
+
+          <!-- Right Rail Infobox -->
+          <aside class="drug-infobox" id="drugInfobox">
+            <!-- Populated dynamically -->
+          </aside>
+        </div>
+
+        <div class="fda-disclaimer">
+          <strong>Disclaimer:</strong> This information is sourced from the openFDA public API and is intended for
+          informational purposes only. It is not a substitute for professional medical advice, diagnosis, or treatment.
+          Always consult a qualified healthcare provider with any questions regarding a medical condition or medication.
+        </div>
+      </div>
+    </div>
+
+    <!-- ===== FOOTER ===== -->
+    <footer class="app-footer">
+      <div class="footer-links">
+        <a href="#" id="aboutMedicareLink">About Medicare</a>
+        <a href="#" id="disclaimersLink">Disclaimers</a>
+        <a href="https://open.fda.gov/" target="_blank" rel="noopener">openFDA API</a>
+      </div>
+      <p class="footer-copy">Data provided by U.S. FDA.</p>
+    </footer>
+
+  </div>
+
+  <script src="./script.js"></script>
+
+  <!-- ===== ABOUT MODAL ===== -->
+  <div class="modal-overlay" id="aboutModal">
+    <div class="modal-content">
+      <button class="modal-close" id="closeAboutModal">
+        <span class="material-symbols-outlined">close</span>
+      </button>
+      <div class="modal-body">
+        <h2>About Medicare</h2>
+        <p>Medicare is a fast, clinically accurate drug information platform designed to provide clean, accessible
+          medical knowledge.</p>
+        <p>This application integrates real-time data from the <strong>U.S. Food & Drug Administration (FDA)</strong>
+          and the <strong>National Library of Medicine (NLM) RxNorm API</strong> to deliver smart predictions and
+          comprehensive drug labeling.</p>
+        <div class="modal-credits">
+          <p>Created by <strong>Eldho Eapen</strong></p>
+          <a href="https://github.com/eladhon/medicare" target="_blank" rel="noopener" class="github-link">
+            <svg viewBox="0 0 24 24" width="20" height="20" stroke="currentColor" stroke-width="2" fill="none"
+              stroke-linecap="round" stroke-linejoin="round" class="github-icon">
+              <path
+                d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22">
+              </path>
+            </svg>
+            View Source Code on GitHub
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===== DISCLAIMERS MODAL ===== -->
+  <div class="modal-overlay" id="disclaimerModal">
+    <div class="modal-content">
+      <button class="modal-close" id="closeDisclaimerModal">
+        <span class="material-symbols-outlined">close</span>
+      </button>
+      <div class="modal-body">
+        <h2>Disclaimers</h2>
+        <p><strong>Do not rely on openFDA to make decisions regarding medical care. Always speak to your health provider
+            about the risks and benefits of FDA-regulated products.</strong></p>
+        <p>Medicare is an independent project and is not affiliated with, endorsed by, or operated by the U.S. Food and
+          Drug Administration (FDA) or the National Library of Medicine (NLM).</p>
+        <p>The information provided by this application is for informational and educational purposes only and should
+          not be used as a substitute for professional medical advice, diagnosis, or treatment.</p>
+      </div>
+    </div>
+  </div>
+
 </body>
+
 </html>
